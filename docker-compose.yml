@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  client:
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      server:
+        condition: service_healthy
+    environment:
+      - VITE_API_URL=/api
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  server:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3009:3009"
+    environment:
+      - PORT=3009
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3009/api || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge 
