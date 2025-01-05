@@ -7,7 +7,7 @@ const MAX_FILE_SIZE = 5000; // KB
 const DEFAULT_FILE_SIZE = 800; // KB
 const DEFAULT_QUALITY = 80;
 
-const API_URL = process.env.VITE_API_URL || 'http://localhost:3009';
+const API_URL = 'http://localhost:3009';
 
 function App() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -101,7 +101,7 @@ function App() {
         <div className="setting-item">
           <label className="mode-selector">
             Compression Mode:
-            <select 
+            <select
               value={compressionMode}
               onChange={(e) => setCompressionMode(e.target.value as 'quality' | 'size')}
             >
